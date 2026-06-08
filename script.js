@@ -25,14 +25,40 @@ document.querySelectorAll('.process-step').forEach((el, i) => {
 });
 
 // Form
-function handleSubmit(e) {
+async function handleSubmit(e) {
   e.preventDefault();
-  const btn = e.target.querySelector('button[type="submit"]');
+  const form = e.target;
+  const btn = form.querySelector('button[type="submit"]');
+  const success = document.getElementById('formSuccess');
+  const error = document.getElementById('formError');
+  const originalText = btn.textContent;
+
+  success.classList.remove('visible');
+  error.classList.remove('visible');
+
+  if (form.action.includes('REPLACE_WITH_FORM_ID')) {
+    error.classList.add('visible');
+    return;
+  }
+
   btn.textContent = 'Sending…';
   btn.disabled = true;
-  setTimeout(() => {
-    e.target.querySelectorAll('input, select, textarea').forEach(el => el.value = '');
-    btn.style.display = 'none';
-    document.getElementById('formSuccess').classList.add('visible');
-  }, 900);
+
+  try {
+    const response = await fetch(form.action, {
+      method: 'POST',
+      body: new FormData(form),
+      headers: { Accept: 'application/json' }
+    });
+
+    if (!response.ok) throw new Error('Form submission failed');
+
+    form.reset();
+    success.classList.add('visible');
+  } catch (err) {
+    error.classList.add('visible');
+  } finally {
+    btn.textContent = originalText;
+    btn.disabled = false;
+  }
 }

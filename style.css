@@ -552,14 +552,24 @@ input:focus, select:focus, textarea:focus {
   box-shadow: 0 0 0 3px rgba(171,148,162,.15);
 }
 textarea { resize: vertical; min-height: 110px; }
-.form-success {
+.form-success,
+.form-error {
   display: none; align-items: center; gap: 10px;
-  color: var(--mauve-dark); font-size: .875rem; font-weight: 500;
+  font-size: .875rem; font-weight: 500;
   margin-top: 14px; padding: 13px 18px;
-  background: var(--mauve-pale); border-radius: var(--radius);
+  border-radius: var(--radius);
+}
+.form-success {
+  color: var(--mauve-dark);
+  background: var(--mauve-pale);
+}
+.form-error {
+  color: #7f3f3f;
+  background: #f6e8e8;
 }
 .form-success svg { width: 18px; height: 18px; flex-shrink: 0; }
-.form-success.visible { display: flex; }
+.form-success.visible,
+.form-error.visible { display: flex; }
 
 /* === FOOTER === */
 .footer { background: var(--charcoal); padding: 56px 0; }
